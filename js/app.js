@@ -41,12 +41,10 @@ function showPosition(position) {
     const marker = L.marker([userPosition[0], userPosition[1]], {icon: pegMan}).addTo(map);
     marker.bindPopup(popUptions);
     map.setView([userPosition[0],  userPosition[1]],16);
-    console.log(userPosition);
     callPlaces(userPosition[0], userPosition[1]);
 }
 
 function addMarkers(places){
-    console.log(places)
     markers.clearLayers();
 
     places.forEach((place)=>{
