@@ -30,7 +30,15 @@ function showPosition(position) {
     const popUptions = L.popup().setContent(`
             <p><b>Aqui estas tú</b></p>
     `);
-    const marker = L.marker([userPosition[0], userPosition[1]]).addTo(map);
+
+    const pegMan = L.icon({
+        iconUrl: '../icons/pegman.png',
+        iconSize:     [20, 45], // size of the icon
+        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+
+    const marker = L.marker([userPosition[0], userPosition[1]], {icon: pegMan}).addTo(map);
     marker.bindPopup(popUptions);
     map.setView([userPosition[0],  userPosition[1]],16);
     console.log(userPosition);
@@ -72,4 +80,8 @@ function callPlaces(lat, long){
         .then((response)=>{
             addMarkers(response.results.items);
         })
+}
+
+function creatIcon(){
+    
 }
