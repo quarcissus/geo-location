@@ -1,7 +1,7 @@
 
 const ui = new UI();
 const map = L.map('map').setView([51.5072, -99.3739778], 1);
-const markers = new L.layerGroup();
+var markers = new L.layerGroup();
 const userPosition = [];
 const enlaceMapa = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 L.tileLayer(
@@ -27,8 +27,12 @@ function showPosition(position) {
     if(userPosition.length === 0){
         userPosition.push(position.coords.latitude, position.coords.longitude);
     }
+    const popUptions = L.popup().setContent(`
+            <p><b>Aqui estas tú</b></p>
+    `);
     const marker = L.marker([userPosition[0], userPosition[1]]).addTo(map);
-    map.setView([userPosition[0],  userPosition[1]], 6);
+    marker.bindPopup(popUptions);
+    map.setView([userPosition[0],  userPosition[1]],16);
     console.log(userPosition);
     callPlaces(userPosition[0], userPosition[1]);
 }
@@ -36,6 +40,30 @@ function showPosition(position) {
 function addMarkers(places){
     console.log(places)
     markers.clearLayers();
+
+    places.forEach((place)=>{
+        // const opcionesPopUp = L.popup().setContent(`
+        //         <p>Calle: ${calle}</p>
+        //         <p><b>Regular: $${regular}</b></p>
+        //         <p><b>Premium: $${premium}</b></p>
+        //     `)
+        const popUptions = L.popup().setContent(`
+            <p><b>Lugar:</b> ${place.title}</p>
+            <p><b>Distancia:</b> ${place.distance}</p>
+        `);
+        // const marker = new L.marker([
+        //     parseFloat(latitude),
+        //     parseFloat(longitude)
+
+        const marker = new L.marker([
+            parseFloat(place.position[0]),
+            parseFloat(place.position[1])
+        ]).bindPopup(popUptions);
+        // ]).bindPopup(opcionesPopUp);
+        markers.addLayer(marker);
+    });
+
+    markers.addTo(map);
 }
 
 
